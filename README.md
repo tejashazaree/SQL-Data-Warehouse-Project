@@ -21,7 +21,7 @@ The process begins with raw sales data containing ~25 headers such as Row ID, Or
 SET DATEFORMAT dmy;
 GO
 
-```
+```sql
 SET DATEFORMAT dmy;
 GO
 
@@ -37,8 +37,27 @@ WITH (
 
 ### 2. Star Schema Data Modeling
 Design the star schema by separating the staged data into specialized dimension and fact tables.
-*   **dimCustomer**: Customer ID (PK), Customer Name, Segment.
+*   **dimCustomer**: Customer ID (PK), CustomerName, Segment.
+      ```sql
+         CREATE TABLE [dbo].[dimCustomer] (
+         [CustomerID]   VARCHAR (50)  NOT NULL,
+         [CustomerName] VARCHAR (255) NOT NULL,
+         [Segment]      VARCHAR (100) NULL,
+         CONSTRAINT [PK_dimCustomer] PRIMARY KEY CLUSTERED ([CustomerID] ASC)
+      );
+      GO
+      ```
 *   **dimProduct**: Product ID (PK), Product Name, Category, Sub-Category.
+      ```sql
+         CREATE TABLE [dbo].[dimProduct] (
+         [ProductID]   VARCHAR (50)  NOT NULL,
+         [ProductName] VARCHAR (255) NOT NULL,
+         [Category]    VARCHAR (100) NOT NULL,
+         [SubCategory] VARCHAR (100) NULL,
+         CONSTRAINT [PK_dimProduct] PRIMARY KEY CLUSTERED ([ProductID] ASC)
+      );
+      GO
+      ```
 *   **dimLocation**: Postal Code (PK), City, State, Country, Region, Market.
 *   **FactOrders**: RowID (PK), and foreign keys linking to the dimensions, along with measures like Sales, Quantity, and Discount.
 
