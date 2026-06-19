@@ -1,6 +1,3 @@
-USE GlobalStoreDW;
-GO
-
 
 -- 1. Populate dimCustomer Safely
 INSERT INTO dbo.dimCustomer (CustomerID, CustomerName, Segment)
