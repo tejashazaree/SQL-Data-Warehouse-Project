@@ -18,8 +18,11 @@ CREATE TABLE [dbo].[FactOrders] (
     CONSTRAINT [PK_FactOrders] PRIMARY KEY CLUSTERED ([RowID] ASC),
     CONSTRAINT [FK_FactOrders_Customer] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[dimCustomer] ([CustomerID]),
     CONSTRAINT [FK_FactOrders_Location] FOREIGN KEY ([PostalCode]) REFERENCES [dbo].[dimLocation] ([PostalCode]),
-    CONSTRAINT [FK_FactOrders_Product] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[dimProduct] ([ProductID])
+    CONSTRAINT [FK_FactOrders_Product] FOREIGN KEY ([ProductID]) REFERENCES [dbo].[dimProduct] ([ProductID]),
+    INDEX [IX_FactOrders_OrderDate] NONCLUSTERED ([OrderDate]),
+    INDEX [IX_FactOrders_CustomerID] NONCLUSTERED ([CustomerID]),
+    INDEX [IX_FactOrders_ProductID] NONCLUSTERED ([ProductID]),
+    INDEX [IX_FactOrders_PostalCode] NONCLUSTERED ([PostalCode])
 );
 GO
-
 
