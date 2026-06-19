@@ -1,46 +1,73 @@
-# SQL-Data-Warehouse-Project
 
-A SQL Server data warehouse project implemented in Visual Studio Code with Git-based version control and CI/CD deployment support.
 
-## Project Overview
+# GlobalStoreDW: SQL Data warehouse Project
 
-This repository contains scripts and configuration files for building, deploying, and managing a SQL Server data warehouse solution. The project is designed to support a full database lifecycle including development, source control, and automated deployment.
+## 📌 Project Overview
+This project demonstrates an end-to-end Data warehouse modeling using **SQL Server database lifecycle** and **VS Code**, version control, and automated **CI/CD pipelines**. It implements a star schema data warehouse designed for sales data analysis.
 
-## Repository Contents
+## 🛠 Tech Stack
+*   **SQL Server**: Target data warehouse.
+*   **VS Code**: Development environment with the **SQL Database Projects** extension.
+*   **GitHub Actions**: Automation for CI/CD.
+*   **.NET SDK & SQLPackage**: Tools for building and deploying `.dacpac` files.
 
-- `README.md` - Project overview and setup instructions.
-- `src/` or `database/` - SQL Server database project files, tables, views, stored procedures, and deployment scripts.
-- `scripts/` - Utility scripts for data loading, transformations, and maintenance tasks.
-- `ci/` or `.github/workflows/` - CI/CD workflow definitions for automated build and deployment.
-- `docs/` - Documentation and design notes (if present).
+---
 
-## Getting Started
+## 🚀 Step-by-Step Implementation
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd SQL-Data-Warehouse-Project
-   ```
-2. Open the project in Visual Studio Code.
-3. Install recommended extensions (SQL Server, SQL Database Projects, GitLens, etc.).
-4. Review the database project files and adjust connection settings as needed.
+### 1. Data Identification & Staging
+The process begins with raw sales data containing ~25 headers such as Row ID, Order ID, Customer ID, Sales, Profit etc.
+*   **Staging**: Upload the raw CSV data into a staging table within MS SQL Server to prepare for transformation.
+SET DATEFORMAT dmy;
+GO
 
-## Development Workflow
+> BULK INSERT [dbo].[Stag_Orders]
+> FROM 'd:\Home\Tejas\OneDrive\Projects\SQL-Data-Warehouse-Project\GlobalStoreDW\Seed_data\Data\global_superstore_2016.csv'
+> WITH (
+>     FORMAT = 'CSV',
+>     FIRSTROW = 2,
+>     FIELDTERMINATOR = ',',
+>     ROWTERMINATOR = '\n' -- This handles standard web/linux line breaks (\n) safely
+> );
 
-- Use Git for source control of SQL scripts and project files.
-- Create feature branches for new changes.
-- Commit and push changes regularly.
-- Open pull requests for reviews and merge after validation.
+### 2. Star Schema Data Modeling
+Design the star schema by separating the staged data into specialized dimension and fact tables.
+*   **dimCustomer**: Customer ID (PK), Customer Name, Segment.
+*   **dimProduct**: Product ID (PK), Product Name, Category, Sub-Category.
+*   **dimLocation**: Postal Code (PK), City, State, Country, Region, Market.
+*   **FactOrders**: RowID (PK), and foreign keys linking to the dimensions, along with measures like Sales, Quantity, and Discount.
 
-## CI/CD Deployment
+### 3. Schema-as-Code Development
+Organize the database objects within the repository using the following structure:
+*   `Tables/`: Contains `.sql` files for the Star Schema tables.
+*   `Scripts/`: Utility scripts for data loading (`SeedData.sql`).
+*   `GlobalStoreDW.sqlproj`: The project definition file for building the database.
 
-This project is intended to support automated build and deployment pipelines. Typical workflow:
+### 4. Data Transformation & Loading
+Develop scripts to move data from the staging area into the finalized star schema model.
+*   **Normalization**: Ensure data is properly structured and duplicates are removed during the transfer.
+*   **Constraints**: Apply **Primary Keys** and **Foreign Keys** to maintain referential integrity between `FactOrders` and the dimension tables.
 
-1. Run database validation and build scripts.
-2. Execute unit tests or data checks.
-3. Deploy changes to target SQL Server environments.
+### 5. Build and Deployment Lifecycle
+Follow the DevOps workflow to manage changes:
+1.  **Define Schema**: Add or update `.sql` files for tables and procedures.
+2.  **Version Control**: Commit changes to Git and use feature branches for new developments.
+3.  **Build**: Compile the SQL project into a deployment-ready `.dacpac` file.
+4.  **Deploy**: Publish the `.dacpac` to the target SQL Server environment.
+5.  **Populate**: Execute the data load scripts to move data from staging to the production schema.
 
-## Notes
+### 6. CI/CD Automation
+The project utilizes **GitHub Actions** (`.github/workflows/sql-deploy.yml`) to automate the lifecycle on every push.
+*   Automatically restores NuGet packages and builds the `.sqlproj`.
+*   Publishes the updated schema to the SQL Server using **sqlpackage**.
+*   Performs database validation and unit checks before deployment.
 
-- Customize deployment scripts and pipeline configuration for your own Azure or on-premises SQL Server environments.
-- Store sensitive connection details in a secure location or environment variables, not in source control.
+---
+
+## 📈 Key Benefits
+*   **Audit Trail**: Every schema change is logged via Git commits.
+*   **Collaboration**: Supports branching, merging, and peer reviews just like application code.
+*   **Consistency**: Automation ensures that the star schema is deployed identically across development and production environments.
+
+## 📜 License
+This project is licensed under the MIT License.
