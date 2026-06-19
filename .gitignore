@@ -11,14 +11,14 @@
 *.sln.docstates
 *.env
 
-#Added by me
-bin/
-obj/
-*.dacpac
-*.dbmdl
-*.bak
-*.log
-.vscode/
+##*/#Added by me
+#bin/
+#obj/
+#*.dacpac
+#*.dbmdl
+#*.bak
+#*.log
+#.vscode/
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
