@@ -1,5 +1,1 @@
 d:\Home\Tejas\OneDrive\Projects\SQL-Data-Warehouse-Project\GlobalStoreDW\bin\Debug\GlobalStoreDW.dacpac
-d:\Home\Tejas\OneDrive\Projects\SQL-Data-Warehouse-Project\GlobalStoreDW\obj\Debug\Model.xml
-d:\Home\Tejas\OneDrive\Projects\SQL-Data-Warehouse-Project\GlobalStoreDW\obj\Debug\refactor.xml
-d:\Home\Tejas\OneDrive\Projects\SQL-Data-Warehouse-Project\GlobalStoreDW\obj\Debug\postdeploy.sql
-d:\Home\Tejas\OneDrive\Projects\SQL-Data-Warehouse-Project\GlobalStoreDW\obj\Debug\predeploy.sql
