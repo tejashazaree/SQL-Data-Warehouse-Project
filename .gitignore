@@ -1,8 +1,11 @@
 # Build Artifacts
-
+[Bb]in/
+[Oo]bj/
+[Tt]emp/
 
 # Deployment Artifacts
-
+*.dacpac
+*.publish.xml
 
 # Visual Studio Code / IDE
 .vscode/
