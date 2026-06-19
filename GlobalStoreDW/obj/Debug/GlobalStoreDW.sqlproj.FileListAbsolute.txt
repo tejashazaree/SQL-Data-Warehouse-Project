@@ -1,1 +1,0 @@
-d:\Home\Tejas\OneDrive\Projects\SQL-Data-Warehouse-Project\GlobalStoreDW\bin\Debug\GlobalStoreDW.dacpac
