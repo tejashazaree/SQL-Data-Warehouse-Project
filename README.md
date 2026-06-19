@@ -21,14 +21,19 @@ The process begins with raw sales data containing ~25 headers such as Row ID, Or
 SET DATEFORMAT dmy;
 GO
 
-> BULK INSERT [dbo].[Stag_Orders]
-> FROM 'd:\Home\Tejas\OneDrive\Projects\SQL-Data-Warehouse-Project\GlobalStoreDW\Seed_data\Data\global_superstore_2016.csv'
-> WITH (
->     FORMAT = 'CSV',
->     FIRSTROW = 2,
->     FIELDTERMINATOR = ',',
->     ROWTERMINATOR = '\n' -- This handles standard web/linux line breaks (\n) safely
-> );
+```
+SET DATEFORMAT dmy;
+GO
+
+BULK INSERT [dbo].[Stag_Orders]
+FROM 'd:\Home\Tejas\OneDrive\Projects\SQL-Data-Warehouse-Project\GlobalStoreDW\Seed_data\Data\global_superstore_2016.csv'
+WITH (
+    FORMAT = 'CSV',
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n' -- This handles standard web/linux line breaks (\n) safely
+);
+```
 
 ### 2. Star Schema Data Modeling
 Design the star schema by separating the staged data into specialized dimension and fact tables.
