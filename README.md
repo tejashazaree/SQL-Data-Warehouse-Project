@@ -33,6 +33,9 @@ The process begins with raw sales data containing ~25 headers such as Row ID, Or
 
 ### 2. Star Schema Data Modeling
 Design the star schema by separating the staged data into specialized dimension and fact tables.
+
+![GlobalStoreDW.png](img/GlobalStoreDW.png)
+
 *   **👤 dimCustomer**: Customer ID (PK), CustomerName, Segment.
       ```sql
          CREATE TABLE [dbo].[dimCustomer] (
