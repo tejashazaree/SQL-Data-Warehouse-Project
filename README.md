@@ -1,6 +1,8 @@
 
 
-# GlobalStoreDW: SQL Data warehouse Project
+# GlobalStoreDW: SQL Data warehouse Project   
+
+![Data Warehouse Icon](img/data-warehouse-icon.png)
 
 ## 📌 Project Overview
 This project demonstrates an end-to-end Data warehouse modeling using **SQL Server database lifecycle** and **VS Code**, version control, and automated **CI/CD pipelines**. It implements a star schema data warehouse designed for sales data analysis.
