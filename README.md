@@ -1,6 +1,6 @@
 
 
-#  GlobalStoreDW: SQL Data warehouse Project  <img src="img/dw.png" alt="Logo" width="50" />
+#  🛢️ GlobalStoreDW: SQL Data warehouse Project  <img src="img/dw.png" alt="Logo" width="50" />
 
 
 ## 📌 Project Overview
