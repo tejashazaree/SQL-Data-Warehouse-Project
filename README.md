@@ -23,16 +23,17 @@ The process begins with raw sales data containing ~25 headers such as Row ID, Or
 2. **Star Schema Data Modeling**
 3. **Schema-as-Code Development**
 4. **Data Transformation & Loading**
-5. **Data Validation & Quality Checks**
-6. **Performance Optimization**
-7. **Documentation & Governance**
-8. **Deployment & Monitoring**
+5. **Build and Deployment Lifecycle**
+6. **Data Validation & Quality Checks**
+7. **CI/CD Automation**
+8. **Key Benefits**
+9. **License**
 
 
-### 1. Staging
+### 1. Staging  🎬
  Upload the raw CSV data into a staging table within MS SQL Server to prepare for transformation.
 
-### 2. Star Schema Data Modeling
+### 2. Star Schema Data Modeling  🌟
 Design the star schema by separating the staged data into specialized dimension and fact tables.
 
 ![GlobalStoreDW.png](img/GlobalStoreDW.png)
@@ -104,13 +105,13 @@ Design the star schema by separating the staged data into specialized dimension 
       GO
       ```
 
-### 3. Schema-as-Code Development
+### 3. Schema-as-Code Development  { }
 Organize the database objects within the repository using the following structure:
 *   `\dbo\Tables\`: Contains `.sql` files for the Star Schema tables.
 *   `\Seed_Data_Scripts\`: Utility scripts for data loading (`SeedData.sql`).
 *   `\GlobalStoreDW.sqlproj`: The project definition file for building the database.
 
-### 4. Data Transformation & Loading 
+### 4. Data Transformation & Loading  📥
 Develop scripts to move data from the staging area into the finalized star schema model.
 *   **Normalization**: Ensure data is properly structured and duplicates are removed during the transfer.
 *   **Constraints**: Apply **Primary Keys** and **Foreign Keys** to maintain referential integrity between `FactOrders` and the dimension tables.
@@ -206,7 +207,7 @@ WITH (
 ```
 
 
-### 5. Build and Deployment Lifecycle
+### 5. Build and Deployment Lifecycle 🚀
 Follow the Data warehouse development DevOps workflow to manage changes:
 1.  **Define Schema**: Add or update `.sql` files for tables and procedures.
 2.  **Version Control**: Commit changes to Git and use feature branches for new developments.
@@ -214,7 +215,46 @@ Follow the Data warehouse development DevOps workflow to manage changes:
 4.  **Deploy**: Publish the `.dacpac` to the target SQL Server environment.
 5.  **Populate**: Execute the data load scripts to move data from staging to the production schema.
 
-### 6. CI/CD Automation
+
+### 6. **Data Validation & Quality Checks**  ✅🧐
+The file Validation.sql contains a set of SQL scripts used to validate data completeness, integrity and basic quality after ETL loads. The scripts are organized and documented so they can be run individually during development, CI checks, or after deployment. Key checks included:
+
+- Row counts: compares total row counts between staging (dbo.Stag_Orders) and the production fact table (dbo.FactOrders) to ensure expected volumes were loaded.
+- Distinct counts and key presence: verifies distinct customer and product counts in staging versus production, and checks for missing or NULL business keys.
+- Date and range validations: ensures OrderDate and ShipDate are valid dates, that ShipDate >= OrderDate, and that dates fall within expected business ranges.
+- Numeric field sanity checks: validates numeric fields (Sales, Quantity, Discount, Profit, ShippingCost) for non-nullness where required, reasonable ranges, and detects negative or outlier values.
+- Referential integrity checks: validates that foreign keys (CustomerID, ProductID, PostalCode) referenced in FactOrders exist in their respective dimension/staging sources or flags orphaned rows.
+- Duplicate detection: detects duplicate business keys (e.g., same OrderID and ProductID) and reports counts and sample offending rows.
+- Sample data and quick spot checks: returns configurable sample rows from staging and fact tables for manual inspection, and summary aggregations by key dimensions (e.g., Sales by PostalCode, ShipMode).
+
+Each script outputs clear result sets with descriptive column names so they can be asserted in automated tests or logged in CI pipelines. To run all checks locally, execute Validation.sql against the target database; in CI the same file is executed as part of the validation step after deployment.
+
+For examples of the actual SQL statements used in each script, see the Validation.sql file in the repository (it includes the full SELECTs, JOINs and WHERE clauses referenced above).
+
+```sql
+-- Script 1
+SELECT
+    'Staging Total Rows' AS TableName,
+    COUNT(*) AS RecordCount
+FROM dbo.Stag_Orders
+UNION ALL
+SELECT
+    'FactOrders Total Rows' AS TableName,
+    COUNT(*) AS RecordCount
+FROM dbo.FactO.....................(full code in Validation.sql file)
+
+
+-- Script 2
+SELECT
+    (SELECT COUNT(DISTINCT [Customer ID])
+     FROM dbo.Stag_Orders
+
+     WHERE [Customer ID] IS NOT NULL) AS DistinctStagingCustomers,
+    (SELECT COUNT(*).....................(full code in Validation.sql file)
+
+```
+
+### 7. CI/CD Automation  ⚙️
 The project utilizes **GitHub Actions** (`.github/workflows/sql-deploy.yml`) to automate the lifecycle on every push.
 *   Automatically restores NuGet packages and builds the `.sqlproj`.
 *   Publishes the updated schema to the SQL Server using **sqlpackage**.
@@ -222,10 +262,10 @@ The project utilizes **GitHub Actions** (`.github/workflows/sql-deploy.yml`) to 
 
 ---
 
-## 7. 📈 Key Benefits
+## 8. 📈 Key Benefits  🗝️
 *   **Audit Trail**: Every schema change is logged via Git commits.
 *   **Collaboration**: Supports branching, merging, and peer reviews just like application code.
 *   **Consistency**: Automation ensures that the star schema is deployed identically across development and production environments.
 
-## 8. 📜 License
+## 9. 📜 License  🪪
 This project is licensed under the MIT License.
