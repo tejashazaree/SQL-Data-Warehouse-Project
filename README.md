@@ -4,7 +4,7 @@
 
 
 ## 📌 Project Overview
-This project demonstrates an end-to-end Data warehouse modeling using **SQL Server database lifecycle** and **VS Code**, version control, and automated **CI/CD pipelines**. It implements a star schema data warehouse designed for sales data analysis.
+This project demonstrates end-to-end data warehouse modeling using **SQL Server database lifecycle** and **VS Code**, version control, and automated **CI/CD pipelines**. It implements a star schema data warehouse designed for sales data analysis.
 
 ## 🛠 Tech Stack
 *   **SQL Server**: Target data warehouse.
@@ -16,8 +16,8 @@ This project demonstrates an end-to-end Data warehouse modeling using **SQL Serv
 
 ## 🚀 Step-by-Step Implementation
 
-###  Data Identification, Staging and Transformation steps
-The process begins with raw sales data containing ~25 headers such as Row ID, Order ID, Customer ID, Sales, Profit etc.
+### Data Identification, Staging, and Transformation Steps
+The process begins with raw sales data containing ~25 headers such as Row ID, Order ID, Customer ID, Sales, Profit, etc.
 
 1. **Staging**
 2. **Star Schema Data Modeling**
@@ -115,7 +115,7 @@ Organize the database objects within the repository using the following structur
 Develop scripts to move data from the staging area into the finalized star schema model.
 *   **Normalization**: Ensure data is properly structured and duplicates are removed during the transfer.
 *   **Constraints**: Apply **Primary Keys** and **Foreign Keys** to maintain referential integrity between `FactOrders` and the dimension tables.
-*   **PostDeployment.sql**: In a SDK style (or DevOps) workflow after table (object) creation sample/initial data needs to be transferred. A constraint which restricts us to do this is we can have only one PostDeployment script. A solution for this proble is we can create multiple .sql files and call those from these file as below.
+*   **PostDeployment.sql**: In an SDK-style workflow, after table and object creation, sample or initial data needs to be transferred. One constraint is that you can have only one PostDeployment script. A solution is to create multiple `.sql` files and call them from that script, as shown below.
 
       ```sql
       -- PostDeployment.sql This file contains SQL statements that will be executed after the build script. 
